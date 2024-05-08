@@ -44,6 +44,32 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(MainActivity.this, "Día seleccionado: " + nombreDiaSeleccionado, Toast.LENGTH_SHORT).show();
             }
         });
+
+        // Funcionalidad para eliminar un día de entrenamiento de la lista
+        listViewDias.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                builder.setTitle("Eliminar día de entrenamiento");
+                builder.setMessage("¿Estás seguro de que deseas eliminar este día?");
+                builder.setPositiveButton("Sí", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        listaDias.remove(position);
+                        adapter.notifyDataSetChanged();
+                        Toast.makeText(MainActivity.this, "Día eliminado", Toast.LENGTH_SHORT).show();
+                    }
+                });
+                builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+                builder.show();
+                return true;
+            }
+        });
     }
 
     private void mostrarDialogoNombreDia() {
