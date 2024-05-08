@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -34,6 +35,15 @@ public class MainActivity extends AppCompatActivity {
                 mostrarDialogoNombreDia();
             }
         });
+
+        listViewDias.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                String nombreDiaSeleccionado = listaDias.get(position);
+                //TODO: Este elemento es importante para redireccionar proximamente, al dia correspondiente. En este caso solo agregue un toast para mostrar que el dia se selecciona
+                Toast.makeText(MainActivity.this, "Día seleccionado: " + nombreDiaSeleccionado, Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private void mostrarDialogoNombreDia() {
@@ -44,10 +54,14 @@ public class MainActivity extends AppCompatActivity {
         builder.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                String nombreDia = input.getText().toString();
-                listaDias.add(nombreDia);
-                adapter.notifyDataSetChanged();
-                Toast.makeText(MainActivity.this, "Día de entrenamiento: " + nombreDia, Toast.LENGTH_SHORT).show();
+                String nombreDia = input.getText().toString().trim();
+                if (!nombreDia.isEmpty()) {
+                    listaDias.add(nombreDia);
+                    adapter.notifyDataSetChanged();
+                    Toast.makeText(MainActivity.this, "Día de entrenamiento: " + nombreDia, Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(MainActivity.this, "Por favor, ingresa un nombre válido.", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
